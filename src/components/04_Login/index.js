@@ -2,15 +2,17 @@ import React, { Component } from 'react';
 import axios from 'axios';
 
 class Login extends Component {
-  
+
   constructor(){
     super();
     this.state = {
       name: '',
       password: '',
-      errorMessage: ''
+      errorMessage: '',
+      userName:''
+
     }
-    
+
   }
 
   login = (e) => {
@@ -21,8 +23,15 @@ class Login extends Component {
     })
     .then(res => {
       if(res.data.success){
-        console.log('Success boi')
-        this.props.history.push(`/home`)
+
+        let a = res.data.info;
+        this.props.history.push({
+          pathname: "/chat",
+          state:{
+            userName: a.name
+          },
+
+        });
       } else {
         this.setState({
           errorMessage: res.data.message
@@ -45,7 +54,7 @@ class Login extends Component {
               </div>
               <div className="form-group">
                 <label>Password</label>
-                <input type="text" value={this.state.password} onChange={e => this.setState({password: e.target.value})} className="form-control" />
+                <input type="password" value={this.state.password} onChange={e => this.setState({password: e.target.value})} className="form-control" />
               </div>
               <button type="submit" className="btn btn-default">Login</button>
               <h1 style={ myStyle }>{this.state.errorMessage}</h1>

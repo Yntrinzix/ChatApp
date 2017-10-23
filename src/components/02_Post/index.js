@@ -18,7 +18,7 @@ class Post extends Component {
     })
     .then(res => {
     })
-      
+
   }
 
   updateName = (e) => {
@@ -45,7 +45,7 @@ class Post extends Component {
             </div>
             <div className="form-group">
               <label>Password</label>
-              <input type="text" value={this.state.password} onChange={this.updatePassword} className="form-control" />
+              <input type="password" value={this.state.password} onChange={this.updatePassword} className="form-control" />
             </div>
             <button type="submit" className="btn btn-default">Register</button>
           </form>

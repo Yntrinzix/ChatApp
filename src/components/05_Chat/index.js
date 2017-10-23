@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import Display from './Display';
+import Controls from './Controls';
 
 import {sendMessage, sendHa} from '../../api';
 
@@ -7,28 +9,45 @@ class Chat extends Component {
   constructor(){
     super();
     this.state = {
-      message: ""
+      userName:"",
+      message: "",
+      messages: [],
+      date:""
     }
   }
 
-  handleInputChange = e => this.setState({message: e.target.value})
-  
-  submitMessage = (e) => {
-    e.preventDefault();
+  componentDidMount = () => this.setState({userName: this.props.location.state.userName})
 
-    sendMessage(this.state.message)
-    sendHa(this.state.message)
+
+
+
+  submitMessage = (e) => {
+    let d = new Date();
+    const newData = {...this.state};
+    var message = {
+      message: e,
+      name: this.state.userName,
+      date: d
+    }
+
+    newData.messages.push (message)
+    this.setState({
+      messages: newData.messages,
+    });
+
+
   }
 
   render() {
+
+    console.log(this.state.messages)
+
     return (
       <div>
-        <div style={{overflowY: "scroll", height: "75vh", backgroundColor: "gray", width: "100%"}}>
-        </div>
-        <form>
-          <input type="text" className="form-control" onChange={this.handleInputChange} />
-          <button onClick={this.submitMessage} type="submit" className="btn btn-primary">Send</button>
-        </form>
+      <h5>Welcome {this.state.userName}</h5>
+
+        <Display messages={this.state.messages}/>
+        <Controls onSubmit={this.submitMessage}/>
       </div>
     );
   }

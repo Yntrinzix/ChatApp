@@ -9,20 +9,27 @@ import Chat from './components/05_Chat';
 
 
 
+
 class App extends Component {
   constructor(){
     super();
     this.state = {
-      timestamp: 'no timestamp yet'
+      timestamp: 'no timestamp yet',
+      Name: "default",
     }
 
   }
+
+  getName = d => console.log(d)
+
+
+
   render() {
     return (
         <BrowserRouter>
           <div>
             <Header />
-            <Route path='/' exact component={Login} />
+            <Route onSubmit={this.getName} path='/' exact component={Login} />
             <Route path='/post' component={Post} />
             <Route path='/home' component={Home} />
             <Route path='/chat' component={Chat} />

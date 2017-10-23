@@ -8,8 +8,9 @@ class Header extends Component {
         <div className="container-fluid">
           <div className="navbar-header">
               <div>
-                <Link to={`/`}>Home</Link>
-                <Link to={`/post`}>Post</Link>
+                <Link to={`/`}>Home </Link>
+                <Link to={`/post`}>Post </Link>
+                <Link to={`/chat`}>Chat </Link>
               </div>
           </div>
         </div>

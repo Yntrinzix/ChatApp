@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 const io = require('socket.io')();
-const cloudDB = 'mongodb://<dbuser>:<dbpassword>@ds129315.mlab.com:29315/react';
+const cloudDB = 'mongodb://admin:admin@ds129315.mlab.com:29315/react';
 
 mongoose.connect(cloudDB, () => {
   console.log('DB Connected')
@@ -23,7 +23,15 @@ const UserModelSchema = new mongoose.Schema({
   password: String
 });
 
+const ChatModelSchema = new mongoose.Schema({
+  name: String,
+  message: String,
+  date: Date
+});
+
 const User = mongoose.model('User', UserModelSchema);
+
+const Chat = mongoose.model('Chat', ChatModelSchema);
 
 
 io.on('connection', (client) => {
