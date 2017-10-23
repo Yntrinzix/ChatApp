@@ -2,9 +2,11 @@ const app = require('express')();
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-
 const io = require('socket.io')();
 const cloudDB = 'mongodb://admin:admin@ds129315.mlab.com:29315/react';
+const User = require('./server/models/user');
+const Chat = require('./server/models/chat');
+const Routes = require('./server/routes/routes');
 
 mongoose.connect(cloudDB, () => {
   console.log('DB Connected')
@@ -18,20 +20,8 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
-const UserModelSchema = new mongoose.Schema({
-  name: String,
-  password: String
-});
+app.use('/api',Routes);
 
-const ChatModelSchema = new mongoose.Schema({
-  name: String,
-  message: String,
-  date: Date
-});
-
-const User = mongoose.model('User', UserModelSchema);
-
-const Chat = mongoose.model('Chat', ChatModelSchema);
 
 
 io.on('connection', (client) => {
@@ -48,45 +38,6 @@ io.on('connection', (client) => {
   });
 
 });
-
-app.get('/api/user', (req, res) => {
-  User.find({}, (err, listOfUsers) => {
-    if(err){
-      console.log(err)
-    }
-    setTimeout(() => {
-      res.json(listOfUsers);
-    }, 3000)
-  })
-});
-
-app.post('/api/adduser', (req, res) => {
-  console.log(req.body);
-  User.create({name: req.body.name, password: req.body.password}, (err, newUser) => {
-    res.json(newUser);
-  })
-});
-
-app.post('/api/login', (req, res) => {
-  User.findOne({
-    name: req.body.name,
-    password: req.body.password
-  }, (err, user) => {
-    console.log(req.body)
-    console.log(user)
-    if(user){
-      res.json({
-        success: true,
-        info: user
-      });
-    } else if(!user){
-      res.json({
-        success: false,
-        message: 'You Suck cock'
-      })
-    }
-  })
-})
 
 const port = 8000;
 io.listen(port);

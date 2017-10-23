@@ -11,7 +11,7 @@ class Controls extends React.Component {
 
   change = e => this.setState({message: e.target.value})
 
-  tae = (e) =>  {
+  tae = e =>  {
     e.preventDefault();
     this.props.onSubmit(this.state.message);
     this.setState({

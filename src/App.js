@@ -29,7 +29,7 @@ class App extends Component {
         <BrowserRouter>
           <div>
             <Header />
-            <Route onSubmit={this.getName} path='/' exact component={Login} />
+            <Route path='/' exact component={Login} />
             <Route path='/post' component={Post} />
             <Route path='/home' component={Home} />
             <Route path='/chat' component={Chat} />

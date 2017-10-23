@@ -16,7 +16,14 @@ class Chat extends Component {
     }
   }
 
-  componentDidMount = () => this.setState({userName: this.props.location.state.userName})
+  componentDidMount = () => {
+    this.setState({userName: this.props.location.state.userName})
+    axios.get('/api/getMsg').then(res=>{
+      this.setState({messages:res.data});
+    });
+
+
+  }
 
 
 
@@ -30,10 +37,20 @@ class Chat extends Component {
       date: d
     }
 
+
+
     newData.messages.push (message)
     this.setState({
       messages: newData.messages,
     });
+
+    axios.post('/api/saveChat',{
+      message
+    }).then( res => {
+      console.log(res.data)
+    })
+
+
 
 
   }
