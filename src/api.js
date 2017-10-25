@@ -9,10 +9,11 @@ export const sendMessage = (data) => {
   socket.emit('sendMessage', data)
 }
   
-export const sendHa = (data) => {
-  socket.emit('sendMessage', data)
-}
-
+export const messageListener = (cb) => {
+  socket.on('fromBackend', data => {
+    return cb(null, data);
+  });
+};
 
 
 

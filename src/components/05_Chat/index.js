@@ -3,7 +3,7 @@ import axios from 'axios';
 import Display from './Display';
 import Controls from './Controls';
 
-import {sendMessage, sendHa} from '../../api';
+import {sendMessage, messageListener} from '../../api';
 
 class Chat extends Component {
   constructor(){
@@ -22,47 +22,40 @@ class Chat extends Component {
       this.setState({messages:res.data});
     });
 
-
+    messageListener((err, data) => {
+      const newData = {...this.state};
+      const message = {
+        message: data.message,
+        name: data.name,
+        date: data.date
+      };
+      newData.messages.push(message);
+      this.setState({messages: newData.messages});
+    })
   }
 
 
 
 
-  submitMessage = (e) => {
-    let d = new Date();
-    const newData = {...this.state};
-    var message = {
-      message: e,
+  submitMessage = (data) => {
+    const message = {
+      message: data,
       name: this.state.userName,
-      date: d
+      date: new Date()
     }
-
-
-
-    newData.messages.push (message)
-    this.setState({
-      messages: newData.messages,
-    });
 
     axios.post('/api/saveChat',{
       message
     }).then( res => {
-      console.log(res.data)
+      sendMessage(res.data)
     })
-
-
-
 
   }
 
   render() {
-
-    console.log(this.state.messages)
-
     return (
       <div>
       <h5>Welcome {this.state.userName}</h5>
-
         <Display messages={this.state.messages}/>
         <Controls onSubmit={this.submitMessage}/>
       </div>
